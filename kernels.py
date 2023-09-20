@@ -130,7 +130,7 @@ comp2_plt.set_bbox({ 'facecolor':'white', 'edgecolor':'red'})
 
 fig.text(0.5, -0.05, 'X values, -', ha='center', size = 18)
 
-#plt.savefig('kernel_combinations_smaller.png', dpi=500)
+plt.savefig(f'{ktype1}_{ktype2}_combine_samples.png', dpi=500)
 
 plt.show()
 
@@ -269,5 +269,5 @@ ax6.set_ylim(500,0)
 ax6.set_xticks([0,100,200,300,400,500])
 ax6.grid()
 
-
+plt.savefig(f'{ktype1}_{ktype2}_combine_covariance.png', dpi=500)
 
