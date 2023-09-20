@@ -17,8 +17,36 @@ import numpy as np
 np.random.seed(12310)
 
 X = np.arange(0,50,0.1).reshape(-1,1)
-k1 = GPy.kern.RBF(1,lengthscale=10, active_dims=[0])
-k2 = GPy.kern.RBF(1,lengthscale=1,active_dims=[0])
+
+
+ls1=10
+ls2=1
+var1=1
+var2=1
+par1 = "-"
+par2 = "-"
+
+#Here play around with kernel types
+k1 = GPy.kern.RBF(1,variance=var1, lengthscale=ls1, active_dims=[0])
+k2 = GPy.kern.RBF(1,variance=var2, lengthscale=ls2,active_dims=[0])
+
+
+ktype1 = str(k1._name).upper()
+ktype2 = str(k2._name).upper()
+
+if (len(ktype1) > 3) or (len(ktype2) > 3):
+    ktype1 = ktype1[:3]
+    ktype2 = ktype2[:3]
+
+
+if ktype1 == ktype2:
+    ktype1 = ktype1 + "1"
+    ktype2 = ktype2 + "2"
+
+
+
+
+
 zeros = np.zeros(X.shape[0])
 ksum = k1+k2
 kmult = k1 * k2
@@ -82,22 +110,22 @@ ax6.grid()
 
 
 #deal with bounding boxes
-lin = fig.text(0.27, 0.75, 'LIN', ha='center', size = 22, backgroundcolor='white')
+lin = fig.text(0.415, 0.72, f'{ktype1}\nL={ls1},$\sigma^2$={var1}', ha='center', size = 18, backgroundcolor='white')
 lin.set_bbox({'facecolor':'white', 'edgecolor':'red'})
 
-cos = fig.text(0.77, 0.75, 'COS', ha='center', size = 22, backgroundcolor='white')
+cos = fig.text(0.91, 0.72, f'{ktype2}\nL={ls1},$\sigma^2$={var2}', ha='center', size = 18, backgroundcolor='white')
 cos.set_bbox({'facecolor':'white', 'edgecolor':'red'})
 
-sum_plot = fig.text(0.27, 0.425, 'LIN + COS', ha='center', size = 22, backgroundcolor='white')
+sum_plot = fig.text(0.4, 0.4, f'{ktype1} + {ktype2}', ha='center', size = 18, backgroundcolor='white')
 sum_plot.set_bbox({'facecolor':'white', 'edgecolor':'red'})
 
-mult_plot = fig.text(0.77, 0.425, 'LIN x COS', ha='center', size = 22, backgroundcolor='white')
+mult_plot = fig.text(0.91, 0.4, f'{ktype1} x {ktype2}', ha='center', size = 18, backgroundcolor='white')
 mult_plot.set_bbox({ 'facecolor':'white', 'edgecolor':'red'})
 
-comp1_plt = fig.text(0.27, 0.1, 'LIN $\circ$ COS', ha='center', size = 22, backgroundcolor='white')
+comp1_plt = fig.text(0.41, 0.08, f'{ktype1} $\circ$ {ktype2}', ha='center', size = 18, backgroundcolor='white')
 comp1_plt.set_bbox({ 'facecolor':'white', 'edgecolor':'red'})
 
-comp2_plt = fig.text(0.77, 0.1, 'COS $\circ$ LIN', ha='center', size = 22, backgroundcolor='white')
+comp2_plt = fig.text(0.91, 0.08, f'{ktype2} $\circ$ {ktype1}', ha='center', size = 18, backgroundcolor='white')
 comp2_plt.set_bbox({ 'facecolor':'white', 'edgecolor':'red'})
 
 fig.text(0.5, -0.05, 'X values, -', ha='center', size = 18)
@@ -106,9 +134,10 @@ fig.text(0.5, -0.05, 'X values, -', ha='center', size = 18)
 
 plt.show()
 
-#%%%
 
+#%%%
 #Plotting the covarianc ematrices
+
 
 ls1=10
 ls2=1
@@ -241,51 +270,4 @@ ax6.set_xticks([0,100,200,300,400,500])
 ax6.grid()
 
 
-#%%%
 
-#deal with bounding boxes
-lin = fig.text(0.27, 0.75, 'LIN', ha='center', size = 22, backgroundcolor='white')
-lin.set_bbox({'facecolor':'white', 'edgecolor':'red'})
-
-cos = fig.text(0.77, 0.75, 'COS', ha='center', size = 22, backgroundcolor='white')
-cos.set_bbox({'facecolor':'white', 'edgecolor':'red'})
-
-sum_plot = fig.text(0.27, 0.425, 'LIN + COS', ha='center', size = 22, backgroundcolor='white')
-sum_plot.set_bbox({'facecolor':'white', 'edgecolor':'red'})
-
-mult_plot = fig.text(0.77, 0.425, 'LIN x COS', ha='center', size = 22, backgroundcolor='white')
-mult_plot.set_bbox({ 'facecolor':'white', 'edgecolor':'red'})
-
-comp1_plt = fig.text(0.27, 0.1, 'LIN $\circ$ COS', ha='center', size = 22, backgroundcolor='white')
-comp1_plt.set_bbox({ 'facecolor':'white', 'edgecolor':'red'})
-
-comp2_plt = fig.text(0.77, 0.1, 'COS $\circ$ LIN', ha='center', size = 22, backgroundcolor='white')
-comp2_plt.set_bbox({ 'facecolor':'white', 'edgecolor':'red'})
-
-fig.text(0.5, -0.05, 'X values, -', ha='center', size = 18)
-
-#plt.savefig('kernel_combinations_smaller.png', dpi=500)
-
-plt.show()axes1 = plt.imshow(C_lin)
-plt.colorbar()
-plt.show()
-
-plt.imshow(C_cos)
-plt.colorbar()
-plt.show()
-
-plt.imshow(C_mult)
-plt.colorbar()
-plt.show()
-
-plt.imshow(C_sum)
-plt.colorbar()
-plt.show()
-
-plt.imshow(C_comp1)
-plt.colorbar()
-plt.show()
-
-plt.imshow(C_comp2)
-plt.colorbar()
-plt.show()
